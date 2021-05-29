@@ -24,11 +24,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Repository = ({ item }) => {
+const Repository = ({ item, onClick }) => {
   const styles = useStyles();
 
   return (
-    <Paper variant="outlined" className={styles.root}>
+    <Paper variant="outlined" onClick={onClick} className={styles.root}>
       <UserAvatar logoUrl={item.owner.avatarUrl} />
       <Typography className={styles.fullName}>{item.fullName}</Typography>
       <IconButton className={styles.nextButton}>
@@ -40,6 +40,7 @@ const Repository = ({ item }) => {
 
 Repository.propTypes = {
   item: PropTypes.object,
+  onClick: PropTypes.func,
 };
 
 export default Repository;
