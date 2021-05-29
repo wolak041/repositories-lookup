@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { debounce } from '@material-ui/core';
 import { Search } from '../../components';
 import { searchTypes } from '../../constants/searchTypes';
 import { searchGitHub } from '../../services/searchRepositories';
@@ -23,14 +24,18 @@ const MainPage = (props) => {
 
   const [repositories, setRepositories] = useState([]);
 
-  useEffect(() => {
-    const getRepositories = async () => {
-      const repositories = await searchGitHub(searchValue);
-      setRepositories(repositories);
-    };
+  const setGitHubRepositories = async (searchValue) => {
+    const repositories = await searchGitHub(searchValue);
+    setRepositories(repositories);
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedSearch = useCallback(debounce(setGitHubRepositories, 300), []);
 
-    searchType === searchTypes.IN_GITHUB && searchValue.length > 2 && getRepositories();
-  }, [searchType, searchValue]);
+  useEffect(() => {
+    if (searchType === searchTypes.IN_GITHUB && searchValue.length > 2) {
+      debouncedSearch(searchValue);
+    }
+  }, [debouncedSearch, searchType, searchValue]);
 
   return (
     <div className={styles.root}>
