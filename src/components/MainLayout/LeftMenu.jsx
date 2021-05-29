@@ -1,7 +1,19 @@
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Drawer, Fab, List, ListItem, ListItemText, Toolbar } from '@material-ui/core';
+import {
+  Button,
+  Drawer,
+  Fab,
+  List,
+  ListItem,
+  ListItemText,
+  TextField,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
 import Add from '@material-ui/icons/Add';
+import { useContext, useState } from 'react';
+import { FoldersContext } from '../../contexts/FoldersContext';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
@@ -15,10 +27,36 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     margin: theme.spacing(2),
   },
+  emptyText: {
+    padding: theme.spacing(1),
+  },
+  newFolder: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing(1),
+    '& > :first-child': {
+      marginBottom: theme.spacing(1),
+    },
+  },
 }));
 
 const LeftMenu = (props) => {
   const styles = useStyles();
+
+  const [newFolderName, setNewFolderName] = useState(null);
+
+  const { folders, setFolder, setCurrentFolder } = useContext(FoldersContext);
+  const [error, setError] = useState(false);
+
+  const folderNames = Object.keys(folders);
+  const createNewFolder = () => {
+    const isAlreadyCreated = folderNames?.some((name) => name === newFolderName);
+
+    if (!isAlreadyCreated) {
+      setFolder((prev) => ({ ...prev, [newFolderName]: {} }));
+      setNewFolderName(null);
+    } else setError(true);
+  };
 
   return (
     <Drawer
@@ -31,14 +69,40 @@ const LeftMenu = (props) => {
       <Toolbar />
       <div className={styles.drawerContainer}>
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {folderNames.length > 0 ? (
+            folderNames.map((name, index) => (
+              <ListItem button key={name} onClick={() => setCurrentFolder(name)}>
+                <ListItemText primary={name} />
+              </ListItem>
+            ))
+          ) : (
+            <Typography color="textSecondary" className={styles.emptyText}>
+              No folders
+            </Typography>
+          )}
+          {newFolderName && (
+            <div className={styles.newFolder}>
+              <TextField
+                label="New folder"
+                variant="outlined"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                className={styles.searchInput}
+                error={error}
+              />
+              <Button variant="contained" color="primary" onClick={createNewFolder}>
+                Save
+              </Button>
+            </div>
+          )}
         </List>
       </div>
-      <Fab color="primary" size="medium" className={styles.addButton}>
+      <Fab
+        color="primary"
+        size="medium"
+        onClick={() => setNewFolderName('New folder')}
+        className={styles.addButton}
+      >
         <Add />
       </Fab>
     </Drawer>
