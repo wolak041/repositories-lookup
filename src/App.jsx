@@ -6,6 +6,7 @@ import {
 import { MainLayout } from './components';
 import { MainPage } from './views';
 import './assets/styles/index.css';
+import FoldersContext from './contexts/FoldersContext';
 
 const theme = createMuiTheme({
   palette: {
@@ -32,9 +33,11 @@ const App = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <StylesProvider injectFirst>
-        <MainLayout>
-          <MainPage />
-        </MainLayout>
+        <FoldersContext>
+          <MainLayout>
+            <MainPage />
+          </MainLayout>
+        </FoldersContext>
       </StylesProvider>
     </MuiThemeProvider>
   );
