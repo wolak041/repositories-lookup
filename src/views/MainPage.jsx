@@ -27,6 +27,7 @@ const MainPage = () => {
   const [searchValue, setSearchValue] = useState('');
 
   const [gitHubRepositories, setGitHubRepositories] = useState([]);
+  const [folderRepositories, setFolderRepositories] = useState([]);
 
   const [expandedRepository, setExpandedRepository] = useState(null);
 
@@ -42,6 +43,15 @@ const MainPage = () => {
       debouncedGitHubSearch(searchValue);
     }
   }, [debouncedGitHubSearch, searchType, searchValue]);
+
+  useEffect(() => {
+    if (searchType === searchTypes.IN_SAVED && folders[currentFolder]) {
+      const repositories = Object.values(folders[currentFolder]).filter((item) =>
+        item.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFolderRepositories(repositories);
+    }
+  }, [currentFolder, folders, searchType, searchValue]);
 
   return (
     <div className={styles.root}>
@@ -60,7 +70,7 @@ const MainPage = () => {
             />
           ) : (
             <RepositoryList
-              items={Object.values(folders[currentFolder])}
+              items={folderRepositories}
               setExpandedRepository={setExpandedRepository}
             />
           )}
