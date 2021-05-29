@@ -6,7 +6,7 @@ import LeftMenu from './LeftMenu';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'grid',
-    gridTemplateColumns: '240px auto',
+    gridTemplateColumns: '220px auto',
     gridTemplateRows: 'auto',
     gridTemplateAreas: `"header header"
     "sidebar content"`,
@@ -35,7 +35,7 @@ const MainLayout = (props) => {
 
   return (
     <div className={styles.root}>
-      <AppBar position="static" className={styles.appBar}>
+      <AppBar position="sticky" className={styles.appBar}>
         <Toolbar className={styles.toolbar}>
           <Typography variant="h5" className={styles.navTitle}>
             GitHub repositories

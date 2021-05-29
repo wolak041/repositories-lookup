@@ -5,7 +5,7 @@ import Add from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
-    width: 240,
+    width: 220,
   },
   drawerContainer: {
     overflow: 'auto',
