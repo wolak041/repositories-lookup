@@ -5,12 +5,13 @@ const parseGitHubResponse = (response = {}) =>
       {
         id: item.id,
         fullName: item.full_name,
+        name: item.name,
         language: item.language,
         createdAt: item.created_at,
         owner: {
           login: item.owner.login,
           avatarUrl: item.owner.avatar_url,
-          url: item.owner.url,
+          htmlUrl: item.owner.html_url,
         },
       },
     ],
