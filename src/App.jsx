@@ -3,7 +3,7 @@ import {
   StylesProvider,
   ThemeProvider as MuiThemeProvider,
 } from '@material-ui/core';
-import { MainLayout } from './components';
+import { MainLayout } from './layouts';
 import { MainPage } from './views';
 import './assets/styles/index.css';
 import FoldersContext from './contexts/FoldersContext';
