@@ -30,6 +30,10 @@ const MainPage = () => {
 
   const [expandedRepository, setExpandedRepository] = useState(null);
 
+  useEffect(() => {
+    setExpandedRepository(null);
+  }, [searchType, currentFolder]);
+
   const loadGitHubRepositories = async (searchValue) => {
     const repositories = await searchGitHub(searchValue);
     setGitHubRepositories(repositories);
