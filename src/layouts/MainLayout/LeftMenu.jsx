@@ -14,6 +14,8 @@ import {
 import Add from '@material-ui/icons/Add';
 import { useContext, useState } from 'react';
 import { FoldersContext } from '../../contexts/FoldersContext';
+import { SearchContext } from '../../contexts/SearchContext';
+import { searchTypes } from '../../constants/searchTypes';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
@@ -38,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(1),
     },
   },
+  activeFolder: {
+    backgroundColor: theme.palette.action.selected,
+  },
 }));
 
 const LeftMenu = (props) => {
@@ -45,7 +50,8 @@ const LeftMenu = (props) => {
 
   const [newFolderName, setNewFolderName] = useState(null);
 
-  const { folders, setFolder, setCurrentFolder } = useContext(FoldersContext);
+  const { folders, setFolder, currentFolder, setCurrentFolder } = useContext(FoldersContext);
+  const { setSearchType } = useContext(SearchContext);
   const [error, setError] = useState(false);
 
   const folderNames = Object.keys(folders);
@@ -71,7 +77,15 @@ const LeftMenu = (props) => {
         <List>
           {folderNames.length > 0 ? (
             folderNames.map((name, index) => (
-              <ListItem button key={name} onClick={() => setCurrentFolder(name)}>
+              <ListItem
+                button
+                key={name}
+                onClick={() => {
+                  setCurrentFolder(name);
+                  setSearchType(searchTypes.IN_SAVED);
+                }}
+                className={currentFolder === name ? styles.activeFolder : ''}
+              >
                 <ListItemText primary={name} />
               </ListItem>
             ))
