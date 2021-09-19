@@ -53,6 +53,9 @@ const MainPage = () => {
     }
   }, [currentFolder, folders, searchType, searchValue]);
 
+  const repositories =
+    searchType === searchTypes.IN_GITHUB ? gitHubRepositories : folderRepositories;
+
   return (
     <div className={styles.root}>
       {expandedRepository === null ? (
@@ -77,7 +80,7 @@ const MainPage = () => {
         </>
       ) : (
         <RepositoryInfo
-          item={gitHubRepositories[expandedRepository]}
+          item={repositories[expandedRepository]}
           goBack={() => setExpandedRepository(null)}
         />
       )}
