@@ -1,8 +1,10 @@
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { searchTypes } from '../../constants/searchTypes';
+import { SearchContext } from '../../contexts/SearchContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,15 +18,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Search = ({ type = searchTypes.IN_GITHUB, setType, phrase, setPhrase }) => {
+const Search = () => {
   const styles = useStyles();
+
+  const { searchType, setSearchType, searchValue, setSearchValue } = useContext(SearchContext);
 
   return (
     <div className={styles.root}>
       <ToggleButtonGroup
-        value={type}
+        value={searchType}
         exclusive
-        onChange={(event, nextView) => nextView && setType(nextView)}
+        onChange={(event, nextView) => nextView && setSearchType(nextView)}
       >
         <ToggleButton value={searchTypes.IN_GITHUB}>In GitHub</ToggleButton>
         <ToggleButton value={searchTypes.IN_SAVED}>In saved</ToggleButton>
@@ -32,8 +36,8 @@ const Search = ({ type = searchTypes.IN_GITHUB, setType, phrase, setPhrase }) =>
       <TextField
         label="Search"
         variant="outlined"
-        value={phrase}
-        onChange={(e) => setPhrase(e.target.value)}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
         className={styles.searchInput}
       />
     </div>
@@ -42,9 +46,7 @@ const Search = ({ type = searchTypes.IN_GITHUB, setType, phrase, setPhrase }) =>
 
 Search.propTypes = {
   type: PropTypes.string,
-  setType: PropTypes.func,
   phrase: PropTypes.string,
-  setPhrase: PropTypes.func,
 };
 
 export default Search;

@@ -7,6 +7,7 @@ import { searchGitHub } from '../services/searchRepositories';
 import RepositoryList from './RepositoryList';
 import RepositoryInfo from './RepositoryInfo';
 import { FoldersContext } from '../contexts/FoldersContext';
+import { SearchContext } from '../contexts/SearchContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,9 +23,7 @@ const MainPage = () => {
   const styles = useStyles();
 
   const { folders, currentFolder } = useContext(FoldersContext);
-
-  const [searchType, setSearchType] = useState(searchTypes.IN_GITHUB);
-  const [searchValue, setSearchValue] = useState('');
+  const { searchType, searchValue } = useContext(SearchContext);
 
   const [gitHubRepositories, setGitHubRepositories] = useState([]);
   const [folderRepositories, setFolderRepositories] = useState([]);
@@ -60,23 +59,8 @@ const MainPage = () => {
     <div className={styles.root}>
       {expandedRepository === null ? (
         <>
-          <Search
-            type={searchType}
-            setType={setSearchType}
-            phrase={searchValue}
-            setPhrase={setSearchValue}
-          />
-          {searchType === searchTypes.IN_GITHUB ? (
-            <RepositoryList
-              items={gitHubRepositories}
-              setExpandedRepository={setExpandedRepository}
-            />
-          ) : (
-            <RepositoryList
-              items={folderRepositories}
-              setExpandedRepository={setExpandedRepository}
-            />
-          )}
+          <Search />
+          <RepositoryList items={repositories} setExpandedRepository={setExpandedRepository} />
         </>
       ) : (
         <RepositoryInfo
