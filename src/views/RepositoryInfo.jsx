@@ -54,10 +54,11 @@ const RepositoryList = ({ item = {}, goBack }) => {
 
   const usedFolderNames = Object.entries(folders).reduce(
     (usedFolders, [name, repositories]) =>
-      Object.keys(repositories).includes(item.id.toString()) ? [...usedFolders, name] : usedFolders,
+      Object.keys(repositories).includes(item.id?.toString())
+        ? [...usedFolders, name]
+        : usedFolders,
     []
   );
-  console.log(Object.entries(usedFolderNames));
 
   const handleMenuClick = (name) => {
     setFolder((prev) => ({ ...prev, [name]: { ...prev[name], [item.id]: item } }));
@@ -89,13 +90,13 @@ const RepositoryList = ({ item = {}, goBack }) => {
       <div className={styles.content}>
         <div className={styles.info}>
           <div className={styles.userInfo}>
-            <UserAvatar logoUrl={item.owner.avatarUrl} width={100} height={100} />
+            <UserAvatar logoUrl={item.owner?.avatarUrl} width={100} height={100} />
             <div>
-              <Typography>Owner name: {item.owner.login}</Typography>
+              <Typography>Owner name: {item.owner?.login}</Typography>
               <Typography>
                 GitHub Link:{' '}
-                <Link href={item.owner.htmlUrl} target="_blank" rel="noopener noreferrer">
-                  {item.owner.htmlUrl}
+                <Link href={item.owner?.htmlUrl} target="_blank" rel="noopener noreferrer">
+                  {item.owner?.htmlUrl}
                 </Link>
               </Typography>
             </div>
